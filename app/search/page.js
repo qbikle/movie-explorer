@@ -113,7 +113,7 @@ function SearchContent({
   );
 }
 
-export default function Search() {
+function SearchPage() {
   const [movies, setMovies] = useState([]);
   const [totalResults, setTotalResults] = useState(0);
   const [searchQuery, setSearchQuery] = useState("");
@@ -225,6 +225,20 @@ export default function Search() {
         </Suspense>
       </div>
     </>
+  );
+}
+
+export default function PageWrapper() {
+  return (
+    <Suspense
+      fallback={
+        <div className="loading-container">
+          <div className="spinner"></div>
+        </div>
+      }
+    >
+      <SearchPage />
+    </Suspense>
   );
 }
 
