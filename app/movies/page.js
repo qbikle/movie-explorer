@@ -1,31 +1,42 @@
 "use client";
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import MovieCard from "@/components/ui/MovieCard";
+import Navbar from "@/components/Navbar";
 
-export default function Page() {
-  const [countdown, setCountdown] = useState(3);
-  const router = useRouter();
+async function fetchMovies() {
+  const response = await fetch("/api/movies/default?count=12");
+  const data = await response.json();
+  return data;
+}
 
+export default function Component() {
+  const [movies, setMovies] = useState([]);
   useEffect(() => {
-    const timer = setInterval(() => {
-      setCountdown((prevCountdown) => prevCountdown - 1);
-    }, 1000);
-
-    setTimeout(() => {
-      router.replace("/search");
-    }, 3000);
-
-    return () => {
-      clearInterval(timer);
-    };
-  }, [router]);
+    async function loadMovies() {
+      const moviesData = await fetchMovies();
+      setMovies(moviesData);
+    }
+    loadMovies();
+  }, []);
 
   return (
-    <div className="flex flex-col items-center justify-center h-screen bg-black text-white">
-      <h1 className="text-4xl">Uh oh! Nothing to see here.</h1>
-      <h2 className="text-2xl font-bold my-2">
-        Redirecting in {countdown} seconds...
-      </h2>
-    </div>
+    <>
+      <Navbar />
+      <main className="container mx-auto py-8">
+        <div className="flex justify-center">
+          <h1 className="text-4xl font-semibold text-black mb-8">
+            Popular Movies
+          </h1>
+        </div>
+        <h2 className="text-2xl font-semibold text-black mb-4 flex items-center">
+          Trending Right Now
+        </h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+          {movies.map((movie) => (
+            <MovieCard key={movie.id} movie={movie} />
+          ))}
+        </div>
+      </main>
+    </>
   );
 }

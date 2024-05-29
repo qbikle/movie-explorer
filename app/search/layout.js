@@ -1,6 +1,6 @@
 import { Chivo } from "next/font/google";
 import { Rubik } from "next/font/google";
-import "./styles.css";
+import "@/app/globals.css";
 
 const chivo = Chivo({
   subsets: ["latin"],

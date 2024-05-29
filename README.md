@@ -4,6 +4,7 @@ Movie Explorer is a web application that allows users to search for movies by ti
 
 ## Features
 
+- Display Top Movies as a showcase.
 - Search movies by title.
 - Display movie details including title, year, synopsis, and poster image.
 - Responsive design using Tailwind CSS.
@@ -13,6 +14,8 @@ Movie Explorer is a web application that allows users to search for movies by ti
 - Next.js 14
 - Tailwind CSS
 - OMDb API
+- framer-motion
+- v0.dev
 
 ## How to Run Locally
 
