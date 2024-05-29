@@ -19,7 +19,7 @@ Movie Explorer is a web application that allows users to search for movies by ti
 1. Clone the repository:
 
    ```bash
-   git clone your_github_repo_url
+   git clone https://github.com/qbikle/movie-explorer.git
    cd movie-explorer
    ```
 
