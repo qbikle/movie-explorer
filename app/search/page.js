@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, Suspense } from "react";
 import SearchCards from "@/components/ui/SearchCards";
 import Navbar from "@/components/Navbar";
 import SearchParam from "@/components/ui/SearchParam";
@@ -96,16 +96,18 @@ export default function Search() {
         <div className="max-w-screen-lg">
           <div className="bg-white dark:bg-gray-950 rounded-lg shadow-lg p-6 flex items-center relative">
             <SearchIcon className="absolute left-[34px] top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
-            <input
-              className="pl-10 pr-12 py-2 w-full rounded-md border border-gray-300 dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              placeholder="Search movies..."
-              type="text"
-              value={searchQuery}
-              onChange={(e) => {
-                setSearchQuery(e.target.value);
-                handleSearch(e.target.value);
-              }}
-            />
+            <Suspense>
+              <input
+                className="pl-10 pr-12 py-2 w-full rounded-md border border-gray-300 dark:border-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                placeholder="Search movies..."
+                type="text"
+                value={searchQuery}
+                onChange={(e) => {
+                  setSearchQuery(e.target.value);
+                  handleSearch(e.target.value);
+                }}
+              />
+            </Suspense>
           </div>
           <div className="grid grid-cols-1 mx-4 sm:grid-cols-2 md:mx-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 my-3">
             {movies.map((movie, index) => (
@@ -120,65 +122,66 @@ export default function Search() {
               </p>
             </div>
           )}
-
-          {movies.length > 0 && (
-            <div className="flex justify-center space-x-4 my-6">
-              <button
-                onClick={() => handlePageChange(currentPage - 1)}
-                disabled={currentPage === 1}
-                className="px-4 py-2 bg-blue-500 text-white rounded-md disabled:opacity-50"
-              >
-                Previous
-              </button>
-              {currentPage > 1 && (
-                <button
-                  onClick={() => handlePageChange(1)}
-                  className="px-4 py-2 bg-blue-500 text-white rounded-md"
-                >
-                  1
-                </button>
-              )}
-              {currentPage > 2 && <span>...</span>}
-              {currentPage > 2 && (
+          <Suspense>
+            {movies.length > 0 && (
+              <div className="flex justify-center space-x-4 my-6">
                 <button
                   onClick={() => handlePageChange(currentPage - 1)}
-                  className="px-4 py-2 bg-blue-500 text-white rounded-md"
+                  disabled={currentPage === 1}
+                  className="px-4 py-2 bg-blue-500 text-white rounded-md disabled:opacity-50"
                 >
-                  {currentPage - 1}
+                  Previous
                 </button>
-              )}
-              <button
-                className="px-4 py-2 bg-blue-700 text-white rounded-md"
-                disabled
-              >
-                {currentPage}
-              </button>
-              {currentPage < totalPages - 1 && (
+                {currentPage > 1 && (
+                  <button
+                    onClick={() => handlePageChange(1)}
+                    className="px-4 py-2 bg-blue-500 text-white rounded-md"
+                  >
+                    1
+                  </button>
+                )}
+                {currentPage > 2 && <span>...</span>}
+                {currentPage > 2 && (
+                  <button
+                    onClick={() => handlePageChange(currentPage - 1)}
+                    className="px-4 py-2 bg-blue-500 text-white rounded-md"
+                  >
+                    {currentPage - 1}
+                  </button>
+                )}
+                <button
+                  className="px-4 py-2 bg-blue-700 text-white rounded-md"
+                  disabled
+                >
+                  {currentPage}
+                </button>
+                {currentPage < totalPages - 1 && (
+                  <button
+                    onClick={() => handlePageChange(currentPage + 1)}
+                    className="px-4 py-2 bg-blue-500 text-white rounded-md"
+                  >
+                    {currentPage + 1}
+                  </button>
+                )}
+                {currentPage < totalPages - 2 && <span>...</span>}
+                {currentPage < totalPages - 1 && (
+                  <button
+                    onClick={() => handlePageChange(totalPages)}
+                    className="px-4 py-2 bg-blue-500 text-white rounded-md"
+                  >
+                    {totalPages}
+                  </button>
+                )}
                 <button
                   onClick={() => handlePageChange(currentPage + 1)}
-                  className="px-4 py-2 bg-blue-500 text-white rounded-md"
+                  disabled={currentPage === totalPages}
+                  className="px-4 py-2 bg-blue-500 text-white rounded-md disabled:opacity-50"
                 >
-                  {currentPage + 1}
+                  Next
                 </button>
-              )}
-              {currentPage < totalPages - 2 && <span>...</span>}
-              {currentPage < totalPages - 1 && (
-                <button
-                  onClick={() => handlePageChange(totalPages)}
-                  className="px-4 py-2 bg-blue-500 text-white rounded-md"
-                >
-                  {totalPages}
-                </button>
-              )}
-              <button
-                onClick={() => handlePageChange(currentPage + 1)}
-                disabled={currentPage === totalPages}
-                className="px-4 py-2 bg-blue-500 text-white rounded-md disabled:opacity-50"
-              >
-                Next
-              </button>
-            </div>
-          )}
+              </div>
+            )}
+          </Suspense>
         </div>
       </div>
     </>
