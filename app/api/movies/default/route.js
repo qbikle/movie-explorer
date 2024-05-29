@@ -27,24 +27,3 @@ export async function GET(req) {
     headers: { "Content-Type": "application/json" },
   });
 }
-
-// export async function GET(req) {
-//   const defaultMovies = [];
-//   const apiKey = process.env.OMDB_API_KEY;
-//   for (let i = 0; i < movieTitles.length; i++) {
-//     const response = await fetch(
-//       `http://www.omdbapi.com/?t=${movieTitles[i]}&apikey=${apiKey}`
-//     );
-//     const data = await response.json();
-//     defaultMovies.push(data);
-//   }
-
-//   const fs = require("fs");
-//   fs.writeFileSync("movies.json", JSON.stringify(defaultMovies));
-
-//   return new NextResponse(JSON.stringify(defaultMovies), {
-//     headers: { "Content-Type": "application/json" },
-//   });
-// }
-
-// Code to fetch data from the OMDB API and save it to a file

@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 
 export async function GET(req, { params }) {
   const { id } = params;
-  const apiKey = process.env.OMDB_API_KEY;
+  const apiKey = process.env.NEXT_PUBLIC_OMDB_API_KEY;
 
   try {
     const response = await fetch(

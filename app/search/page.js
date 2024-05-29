@@ -1,77 +1,91 @@
 "use client";
+import { useState, useEffect, useCallback } from "react";
 import SearchCards from "@/components/ui/SearchCards";
-import { useEffect, useState, useCallback } from "react";
-import { useSearchParams, useRouter, usePathname } from "next/navigation";
 import Navbar from "@/components/Navbar";
 import SearchParam from "@/components/ui/SearchParam";
+import { useRouter, useSearchParams, usePathname } from "next/navigation";
 
 export default function Search() {
   const [movies, setMovies] = useState([]);
   const [totalResults, setTotalResults] = useState(0);
   const [searchQuery, setSearchQuery] = useState("");
-  const searchParams = useSearchParams();
+  const [currentPage, setCurrentPage] = useState(1);
+
   const router = useRouter();
+  const searchParams = useSearchParams();
   const pathname = usePathname();
 
-  const debounce = (func, delay) => {
-    let debounceTimer;
-    return function (...args) {
-      const context = this;
-      clearTimeout(debounceTimer);
-      debounceTimer = setTimeout(() => func.apply(context, args), delay);
-    };
-  };
-
-  useEffect(() => {
-    async function fetchData() {
-      const query = searchParams.get("query");
-      if (query) {
-        const params = new URLSearchParams(searchParams);
-        params.set("page", "1");
-        const response1 = await fetch(`/api/search?${params.toString()}`);
-        const data1 = await response1.json();
-
-        params.set("page", "2");
-        const response2 = await fetch(`/api/search?${params.toString()}`);
-        const data2 = await response2.json();
-
-        setMovies([...data1.movies, ...data2.movies]);
-
-        setTotalResults(data1.totalResults);
-
-        params.set("page", "1");
-
-        router.replace(`${pathname}?${params.toString()}`);
-      }
-    }
-
-    fetchData();
-  }, [pathname, router, searchParams]);
+  const API_URL = "https://www.omdbapi.com/";
+  const API_KEY = process.env.NEXT_PUBLIC_OMDB_API_KEY;
 
   const handleSearch = useCallback(
-    async function (query) {
+    async (query, page) => {
       const params = new URLSearchParams(searchParams);
       params.set("query", query);
-      params.set("page", "1");
+      params.set("page", page);
+      const newSearch = `?${params.toString()}`;
+      const newPath = `${pathname}${newSearch}`;
+      router.replace(newPath);
 
-      const response1 = await fetch(`/api/search?${params.toString()}`);
-      const data1 = await response1.json();
+      try {
+        const response1 = await fetch(
+          `${API_URL}?apikey=${API_KEY}&s=${encodeURIComponent(
+            query
+          )}&page=${page}`
+        );
+        const data1 = await response1.json();
 
-      params.set("page", "2");
-      const response2 = await fetch(`/api/search?${params.toString()}`);
-      const data2 = await response2.json();
+        if (data1.Response === "True") {
+          const response2 = await fetch(
+            `${API_URL}?apikey=${API_KEY}&s=${encodeURIComponent(query)}&page=${
+              page + 1
+            }`
+          );
+          const data2 = await response2.json();
 
-      setMovies([...data1.movies, ...data2.movies]);
-      setTotalResults(data1.totalResults);
-
-      params.set("page", "1");
-
-      router.replace(`${pathname}?${params.toString()}`);
+          const combinedResults = [...data1.Search, ...data2.Search];
+          setMovies(combinedResults);
+          setTotalResults(data1.totalResults || 0);
+        } else {
+          setMovies([]);
+          setTotalResults(0);
+        }
+      } catch (error) {
+        console.error("Error searching movies:", error);
+      }
     },
-    [searchParams, router, pathname]
+    [API_KEY, pathname, router, searchParams]
   );
 
-  const currentPage = parseInt(searchParams.get("page")) || 1;
+  useEffect(() => {
+    if (searchParams.has("query")) {
+      setSearchQuery(searchParams.get("query"));
+    } else {
+      setSearchQuery("");
+    }
+  }, [searchParams]);
+
+  useEffect(() => {
+    if (searchQuery) {
+      handleSearch(searchQuery, currentPage);
+    } else {
+      setMovies([]);
+      setTotalResults(0);
+    }
+  }, [searchQuery, currentPage, handleSearch]);
+
+  const handlePageChange = useCallback(
+    (page) => {
+      setCurrentPage(page);
+      const params = new URLSearchParams(searchParams);
+      params.set("page", page);
+      const newSearch = `?${params.toString()}`;
+      const newPath = `${pathname}${newSearch}`;
+      router.replace(newPath);
+    },
+    [searchParams, pathname, router]
+  );
+
   const totalPages = Math.ceil(totalResults / 20);
 
   return (
@@ -99,18 +113,10 @@ export default function Search() {
             ))}
           </div>
 
-          {movies.length === 0 && searchParams.has("query") && (
+          {movies.length === 0 && (
             <div className="flex items-center justify-center h-[10rem]">
               <p className="text-2xl text-gray-500 dark:text-gray-400">
-                No movies found
-              </p>
-            </div>
-          )}
-
-          {movies.length === 0 && !searchParams.has("query") && (
-            <div className="flex items-center justify-center h-[10rem]">
-              <p className="text-2xl text-gray-500 dark:text-gray-400">
-                Search for movies
+                {searchQuery ? "No movies found" : "Search for movies"}
               </p>
             </div>
           )}
