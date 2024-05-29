@@ -4,6 +4,8 @@ import Image from "next/image";
 import Link from "next/link";
 import Navbar from "./Navbar";
 import MovieCard from "./ui/HomeCard";
+import { FlipWords } from "./ui/FlipWords";
+import { motion } from "framer-motion";
 
 async function fetchMovies() {
   const response = await fetch("/api/movies/default?count=6");
@@ -13,7 +15,7 @@ async function fetchMovies() {
 
 export default function Component() {
   const [movies, setMovies] = useState([]);
-
+  const words = ["Popular", "Trending", "Latest"];
   useEffect(() => {
     async function loadMovies() {
       const moviesData = await fetchMovies();
@@ -29,12 +31,38 @@ export default function Component() {
         <section className="w-full pt-12 md:pt-24 lg:pt-32 border-y">
           <div className="px-4 md:px-6 space-y-10 xl:space-y-16">
             <div className="grid max-w-[1300px] mx-auto gap-4 px-4 sm:px-6 md:px-10 md:grid-cols-2 md:gap-16">
-              <div>
-                <h1 className="lg:leading-tighter text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl xl:text-[3.4rem] 2xl:text-[3.75rem] animate-in">
-                  Explore the World of Movies
-                </h1>
+              <div className="flex flex-col md:justify-start md:items-start md:content-start justify-center content-center items-center px-4">
+                <div className="text-6xl font-normal text-neutral-600 dark:text-neutral-400 text-center md:text-left mb-5 md:mb-1">
+                  Check Out
+                  <FlipWords words={words} /> <br />
+                  movies with the
+                  <br />{" "}
+                  <div className="underline text-black">Movie Explorer</div>
+                </div>
+                <p className="max-w-[600px] text-gray-500 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed dark:text-gray-400 text-center md:text-left my-3">
+                  Welcome to Movie Explorer – where choosing what to watch
+                  becomes an Olympic sport! Dive into our treasure trove of
+                  movies and series, because who needs sunlight when you have
+                  screens? With enough titles to make even the most decisive
+                  person break a sweat, our site is your adrenaline-fueled
+                  adventure in procrastination. So, grab your popcorn and get
+                  ready to explore – who knows, you might emerge a certified
+                  couch potato champion!
+                </p>
+                <Link
+                  className="font-semibold text-md underline-offset-4"
+                  href="/search"
+                >
+                  <motion.div
+                    className="box text-neutral-800 hover:bg-neutral-200 text-2xl hover:dark:bg-neutral-900 rounded-2xl p-2"
+                    whileHover={{ scale: 1.1 }}
+                    transition={{ type: "spring", stiffness: 400, damping: 10 }}
+                  >
+                    Search for Movies
+                  </motion.div>
+                </Link>
               </div>
-              <div className="flex flex-col items-start space-y-4">
+              <div className="flex flex-col items-start space-y-4 mb-4">
                 <Image
                   alt="Movie Poster"
                   className="mx-auto aspect-[2/3] overflow-hidden rounded-xl object-cover"

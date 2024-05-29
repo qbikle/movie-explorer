@@ -1,6 +1,5 @@
 "use client";
 import Link from "next/link";
-import { motion } from "framer-motion";
 import { usePathname } from "next/navigation";
 
 export default function Navbar() {
@@ -13,22 +12,6 @@ export default function Navbar() {
         <FilmIcon className="h-6 w-6" />
         <h1 className="text text-2xl font-normal ml-1">Movie Explorer</h1>
       </Link>
-      {currentRoute !== "/search" && (
-        <nav className="ml-auto flex gap-4 sm:gap-6">
-          <Link
-            className="font-semibold text-md underline-offset-4"
-            href="/search"
-          >
-            <motion.div
-              className="box text-neutral-800 hover:bg-neutral-200 hover:dark:bg-neutral-900 rounded-2xl p-2"
-              whileHover={{ scale: 1.1 }}
-              transition={{ type: "spring", stiffness: 400, damping: 10 }}
-            >
-              Search for Movies
-            </motion.div>
-          </Link>
-        </nav>
-      )}
     </header>
   );
 }

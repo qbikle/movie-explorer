@@ -33,7 +33,7 @@ function SearchContent({
           }}
         />
       </div>
-      <div className="grid grid-cols-1 mx-4 sm:grid-cols-2 md:mx-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 my-3">
+      <div className="grid grid-cols-1 mx-auto sm:grid-cols-2 md:mx-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 md:my-3 pt-12 md:pt-10 justify-center">
         {movies.map((movie, index) => (
           <SearchCards key={index} movie={movie} />
         ))}
@@ -118,6 +118,8 @@ function SearchPage() {
   const [totalResults, setTotalResults] = useState(0);
   const [searchQuery, setSearchQuery] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
+  const [selectedYear, setSelectedYear] = useState("All");
+  const [selectedType, setSelectedType] = useState("All");
 
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -131,6 +133,8 @@ function SearchPage() {
       const params = new URLSearchParams(searchParams);
       params.set("query", query);
       params.set("page", page);
+      params.set("year", selectedYear !== "All" ? selectedYear : "");
+      params.set("type", selectedType !== "All" ? selectedType : "");
       const newSearch = `?${params.toString()}`;
       const newPath = `${pathname}${newSearch}`;
       router.replace(newPath);
@@ -139,27 +143,35 @@ function SearchPage() {
         const response = await fetch(
           `${API_URL}?apikey=${API_KEY}&s=${encodeURIComponent(
             query
-          )}&page=${page}`
+          )}&page=${page}&y=${
+            selectedYear !== "All" ? selectedYear : ""
+          }&type=${selectedType !== "All" ? selectedType : ""}`
         );
         const data1 = await response.json();
-
-        if (data1.Response === "True") {
-          setMovies(data1.Search);
-          setTotalResults(data1.totalResults || 0);
-        } else {
-          setMovies([]);
-          setTotalResults(0);
-        }
 
         const response2 = await fetch(
           `${API_URL}?apikey=${API_KEY}&s=${encodeURIComponent(query)}&page=${
             page + 1
+          }&y=${selectedYear !== "All" ? selectedYear : ""}&type=${
+            selectedType !== "All" ? selectedType : ""
           }`
         );
+
         const data2 = await response2.json();
 
-        if (data2.Response === "True") {
-          setMovies(data1.Search.concat(data2.Search));
+        if (data1.Response === "True" && data2.Response === "True") {
+          // First Merge the two arrays and remove duplicates
+          const data = data1.Search.concat(data2.Search);
+          const uniqueMovies = data.filter(
+            (movie, index, self) =>
+              index ===
+              self.findIndex(
+                (t) => t.imdbID === movie.imdbID && t.Title === movie.Title
+              )
+          );
+
+          setMovies(uniqueMovies);
+          setTotalResults(parseInt(data1.totalResults));
         } else {
           setMovies([]);
           setTotalResults(0);
@@ -169,7 +181,7 @@ function SearchPage() {
       }
     },
     350,
-    [API_KEY, pathname, router, searchParams]
+    [API_KEY, pathname, router, searchParams, selectedYear, selectedType]
   );
 
   useEffect(() => {
@@ -177,6 +189,12 @@ function SearchPage() {
       setSearchQuery(searchParams.get("query"));
     } else {
       setSearchQuery("");
+    }
+    if (searchParams.has("year")) {
+      setSelectedYear(searchParams.get("year"));
+    }
+    if (searchParams.has("type")) {
+      setSelectedType(searchParams.get("type"));
     }
   }, [searchParams]);
 
@@ -187,7 +205,7 @@ function SearchPage() {
       setMovies([]);
       setTotalResults(0);
     }
-  }, [searchQuery, currentPage, handleSearch]);
+  }, [searchQuery, currentPage, handleSearch, selectedYear, selectedType]);
 
   const handlePageChange = useCallback(
     (page) => {
@@ -205,7 +223,12 @@ function SearchPage() {
     <>
       <Navbar />
       <div className="grid md:grid-cols-[300px_1fr] gap-8 px-4 md:px-8">
-        <SearchParam />
+        <SearchParam
+          selectedYear={selectedYear}
+          setSelectedYear={setSelectedYear}
+          selectedType={selectedType}
+          setSelectedType={setSelectedType}
+        />
         <Suspense
           fallback={
             <div className="loading-container">
