@@ -3,6 +3,7 @@ import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import Navbar from "@/components/Navbar";
+import StarRating from "@/components/ui/StarIcon";
 
 export default function MovieDetails() {
   const { id } = useParams();
@@ -50,15 +51,19 @@ export default function MovieDetails() {
   return (
     <>
       <Navbar />
-      {/* add a go to previous page button here */}
-      <button
-        className="bg-neutral-500 hover:bg-neutral-700 text-white font-bold py-2 px-4 rounded m-4"
-        onClick={() => window.history.back()}
-      >
-        Go Back
-      </button>
+
       <div className="container mx-auto px-4 py-6">
-        <h1 className="text-4xl font-bold mb-4 text-gray-800">{movie.Title}</h1>
+        <div className="flex justify-between">
+          <h1 className="text-4xl font-bold mb-4 text-gray-800">
+            {movie.Title}
+          </h1>
+          <button
+            className="bg-neutral-300 hover:bg-neutral-400 text-white font-bold py-2 px-4 rounded m-4"
+            onClick={() => window.history.back()}
+          >
+            Go Back
+          </button>
+        </div>
         <div className="flex flex-col md:flex-row items-center md:items-start bg-white shadow-lg rounded-lg overflow-hidden">
           <div className="md:w-1/3 w-full">
             <Image
@@ -115,8 +120,14 @@ export default function MovieDetails() {
                 <p className="text-gray-700">
                   <strong>Box Office:</strong> {movie.BoxOffice}
                 </p>
-                <p className="text-gray-700">
-                  <strong>IMDB Rating:</strong> {movie.imdbRating}
+                <p className="text-gray-700 flex justify-start gap-2">
+                  <strong>IMDB Rating:</strong>
+                  <div className="flex justify-start">
+                    <div className="text-yellow-400">
+                      <StarRating rating={movie.imdbRating} />
+                    </div>{" "}
+                    {movie.imdbRating}
+                  </div>
                 </p>
                 <p className="text-gray-700">
                   <strong>Metascore:</strong> {movie.Metascore}

@@ -6,7 +6,7 @@ export async function GET(req, { params }) {
 
   try {
     const response = await fetch(
-      `http://www.omdbapi.com/?i=${id}&apikey=${apiKey}`
+      `http://www.omdbapi.com/?i=${id}&apikey=${apiKey}&plot=full`
     );
 
     if (!response.ok) {
