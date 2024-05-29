@@ -13,7 +13,6 @@ export default function Search() {
   const router = useRouter();
   const pathname = usePathname();
 
-  // Debounce function
   const debounce = (func, delay) => {
     let debounceTimer;
     return function (...args) {
@@ -50,7 +49,7 @@ export default function Search() {
   }, [pathname, router, searchParams]);
 
   const handleSearch = useCallback(
-    debounce(async function (query) {
+    async function (query) {
       const params = new URLSearchParams(searchParams);
       params.set("query", query);
       params.set("page", "1");
@@ -68,7 +67,7 @@ export default function Search() {
       params.set("page", "1");
 
       router.replace(`${pathname}?${params.toString()}`);
-    }, 500), // 500ms delay
+    },
     [searchParams, router, pathname]
   );
 
@@ -176,12 +175,6 @@ export default function Search() {
           )}
         </div>
       </div>
-      {/* Make a Featured Movies Horizantal Showcase
-      <div className="grid grid-cols-1 mx-4 sm:grid-cols-2 md:mx-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 my-3">
-        {movies.map((movie, index) => (
-          <SearchCards key={index} movie={movie} />
-        ))}
-      </div> */}
     </>
   );
 }
