@@ -1,10 +1,11 @@
 import { NextResponse } from "next/server";
+import url from "url";
 
 export async function GET(req) {
   try {
-    const { searchParams } = new URL(req.url);
-    const query = searchParams.get("query");
-    const page = parseInt(searchParams.get("page"), 10) || 1;
+    const parsedUrl = url.parse(req.url, true);
+    const query = parsedUrl.query.query;
+    const page = parseInt(parsedUrl.query.page, 10) || 1;
     const apiKey = process.env.OMDB_API_KEY;
 
     if (!apiKey) {
