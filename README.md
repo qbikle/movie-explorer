@@ -56,7 +56,3 @@ The application is deployed on Vercel and can be accessed [here](your_deployed_a
 
 - Add genre filtering.
 - Display user ratings and movie trailers if available.
-
-```
-
-```
