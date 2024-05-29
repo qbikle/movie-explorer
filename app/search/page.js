@@ -204,6 +204,8 @@ function SearchPage() {
   return (
     <>
       <Navbar />
+      <div>{API_KEY}</div>
+
       <div className="grid md:grid-cols-[300px_1fr] gap-8 px-4 md:px-8">
         <SearchParam />
         <Suspense
