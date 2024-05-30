@@ -16,6 +16,7 @@ Movie Explorer is a web application that allows users to search for movies by ti
 - OMDb API
 - framer-motion
 - v0.dev
+- Aceternity UI
 
 ## How to Run Locally
 
@@ -48,7 +49,7 @@ Movie Explorer is a web application that allows users to search for movies by ti
 
 ## Deployment
 
-The application is deployed on Vercel and can be accessed [here](your_deployed_app_url).
+The application is deployed on Vercel and can be accessed [here](https://movie-explorer-mvg216.vercel.app/).
 
 ## Assumptions
 
