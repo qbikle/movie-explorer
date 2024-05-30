@@ -10,13 +10,15 @@ export default function Navbar() {
     <header className="px-4 lg:px-6 h-14 flex items-center shadow-md mb-5">
       <Link className="flex items-center justify-center" href="/">
         <FilmIcon className="h-6 w-6" />
-        <h1 className="text text-2xl font-normal ml-1">Movie Explorer</h1>
+        <h1 className="text-xl md:text-2xl font-normal ml-1">Movie Explorer</h1>
       </Link>
       <nav className="ml-auto flex gap-4">
         <Link href="/" passHref>
           <div
             className={`${
-              currentRoute === "/" ? "text-blue-500" : "text-gray-500"
+              currentRoute === "/"
+                ? "text-neutral-800 font-semibold"
+                : "text-gray-500"
             }`}
           >
             Home
@@ -25,7 +27,9 @@ export default function Navbar() {
         <Link href="/movies" passHref>
           <div
             className={`${
-              currentRoute === "/movies" ? "text-blue-500" : "text-gray-500"
+              currentRoute === "/movies"
+                ? "text-neutral-800 font-semibold"
+                : "text-gray-500"
             }`}
           >
             Movies
@@ -34,7 +38,9 @@ export default function Navbar() {
         <Link href="/search" passHref>
           <div
             className={`${
-              currentRoute === "/search" ? "text-blue-500" : "text-gray-500"
+              currentRoute === "/search"
+                ? "text-neutral-800 font-semibold"
+                : "text-gray-500"
             }`}
           >
             Search

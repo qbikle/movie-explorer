@@ -32,7 +32,7 @@ export default function Component() {
           <div className="px-4 md:px-6 space-y-10 xl:space-y-16">
             <div className="grid max-w-[1300px] mx-auto gap-4 px-4 sm:px-6 md:px-10 md:grid-cols-2 md:gap-16">
               <div className="flex flex-col md:justify-start md:items-start md:content-start justify-center content-center items-center px-4">
-                <div className="text-6xl font-normal text-neutral-600 dark:text-neutral-400 text-center md:text-left mb-5 md:mb-1">
+                <div className="text-3xl md:text-4xl lg:text-6xl font-normal text-neutral-600 dark:text-neutral-400 text-center md:text-left mb-5 md:mb-1">
                   Check Out
                   <FlipWords words={words} /> <br />
                   movies with the
@@ -50,11 +50,11 @@ export default function Component() {
                   couch potato champion!
                 </p>
                 <Link
-                  className="font-semibold text-md underline-offset-4"
+                  className="font-semibold text-md underline"
                   href="/search"
                 >
                   <motion.div
-                    className="box text-neutral-800 hover:bg-neutral-200 text-2xl hover:dark:bg-neutral-900 rounded-2xl p-2"
+                    className="box text-neutral-800 my-6 bg-neutral-200 md:bg-transparent hover:bg-neutral-200 text-2xl hover:dark:bg-neutral-900 rounded-2xl p-2"
                     whileHover={{ scale: 1.1 }}
                     transition={{ type: "spring", stiffness: 400, damping: 10 }}
                   >
@@ -62,15 +62,78 @@ export default function Component() {
                   </motion.div>
                 </Link>
               </div>
-              <div className="flex flex-col items-start space-y-4 mb-4">
-                <Image
-                  alt="Movie Poster"
-                  className="mx-auto aspect-[2/3] overflow-hidden rounded-xl object-cover"
-                  height="600"
-                  width="400"
-                  src="https://i.postimg.cc/9M25pCvS/il-fullxfull-2412674268-1sgm.webp"
-                />
-              </div>
+              <Link href="/movies/tt0137523">
+                <div className="relative group mb-4 max-w-[400px] md:ml-32">
+                  <Image
+                    alt="Movie Poster"
+                    className="mx-auto aspect-[2/3] overflow-hidden rounded-xl object-cover transition duration-500 ease-in-out transform group-hover:brightness-50 group-hover:scale-[1.01]"
+                    height="600"
+                    width="400"
+                    src="https://i.postimg.cc/9M25pCvS/il-fullxfull-2412674268-1sgm.webp"
+                  />
+                  <div className="absolute inset-0 flex flex-col items-start justify-end p-4 opacity-0 group-hover:opacity-100 transition-opacity duration-500 ease-in-out text-white">
+                    <div class="text-lg md:text-xl select-none">
+                      <h3 class="text-5xl mb-5 text-white">Fight Club</h3>
+                      <div class="flex justify-start">
+                        <p class="text-sm md:text-base font-semibold text-gray-300">
+                          Year:
+                        </p>
+                        <p class="text-sm md:text-base font-bold text-gray-100 ml-2">
+                          1999
+                        </p>
+                      </div>
+                      <div class="flex justify-start">
+                        <p class="text-sm md:text-base font-semibold text-gray-300">
+                          Rated:
+                        </p>
+                        <p class="text-sm md:text-base font-bold text-gray-100 ml-2">
+                          R
+                        </p>
+                      </div>
+                      <div class="flex justify-start">
+                        <p class="text-sm md:text-base font-semibold text-gray-300">
+                          Runtime:
+                        </p>
+                        <p class="text-sm md:text-base font-bold text-gray-100 ml-2">
+                          139 min
+                        </p>
+                      </div>
+                      <div class="flex justify-start">
+                        <p class="text-sm md:text-base font-semibold text-gray-300">
+                          Genre:
+                        </p>
+                        <p class="text-sm md:text-base font-bold text-gray-100 ml-2">
+                          Drama
+                        </p>
+                      </div>
+                      <div class="flex justify-start">
+                        <p class="text-sm md:text-base font-semibold text-gray-300">
+                          Director:
+                        </p>
+                        <p class="text-sm md:text-base font-bold text-gray-100 ml-2">
+                          David Fincher
+                        </p>
+                      </div>
+                      <p class="text-sm md:text-base font-semibold text-gray-300">
+                        Plot:
+                      </p>
+                      <p class="text-sm md:text-base text-gray-100">
+                        An insomniac office worker and a devil-may-care soap
+                        maker form an underground fight club that evolves into
+                        much more.
+                      </p>
+                      <div class="flex justify-start">
+                        <p class="text-sm md:text-base font-semibold text-gray-300">
+                          IMDb Rating:
+                        </p>
+                        <p class="text-sm md:text-base font-bold text-gray-100 ml-2">
+                          8.8
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </Link>
             </div>
           </div>
         </section>
@@ -94,6 +157,17 @@ export default function Component() {
               {movies.map((movie, index) => (
                 <MovieCard key={index} movie={movie} />
               ))}
+            </div>
+            <div className="flex justify-center underline">
+              <Link className="font-semibold text-md " href="/movies">
+                <motion.div
+                  className="box text-neutral-800 my-6 bg-neutral-200 md:bg-transparent hover:bg-neutral-200 text-2xl hover:dark:bg-neutral-900 rounded-2xl p-2"
+                  whileHover={{ scale: 1.1 }}
+                  transition={{ type: "spring", stiffness: 400, damping: 10 }}
+                >
+                  Discover Trending Movies
+                </motion.div>
+              </Link>
             </div>
           </div>
         </section>

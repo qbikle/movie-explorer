@@ -5,6 +5,15 @@ import { Libre_Franklin } from "next/font/google";
 import { Cormorant_Garamond } from "next/font/google";
 import "./globals.css";
 
+export const metadeta = {
+  title: {
+    template: "%s | Movie Explorer",
+    default: "Movie Explorer",
+  },
+  description: "This is Movie Explorer, where you can discover new movies.",
+  url: "https://movie-explorer-mvg216.vercel.app/",
+};
+
 const libre_franklin = Libre_Franklin({
   subsets: ["latin"],
   display: "swap",

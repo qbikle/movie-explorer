@@ -2,6 +2,10 @@ import { Chivo } from "next/font/google";
 import { Rubik } from "next/font/google";
 import "@/app/globals.css";
 
+export const metadeta = {
+  title: "Search",
+};
+
 const chivo = Chivo({
   subsets: ["latin"],
   display: "swap",
@@ -15,8 +19,6 @@ const rubik = Rubik({
 
 export default function Layout({ children }) {
   return (
-    <html lang="en">
-      <body className={chivo.variable + " " + rubik.variable}>{children}</body>
-    </html>
+    <body className={chivo.variable + " " + rubik.variable}>{children}</body>
   );
 }
